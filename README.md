@@ -3,6 +3,26 @@ Quagga in Docker
 This demo shows off two ways of putting Quagga into a Docker container to do
 Layer 3 networking on the hosts.
 
+
+
+Quickstart: Run the demo
+------------------------
+(This assumes you are running Ansible 1.9.4 and Vagrant 1.8.4 on your host.)
+
+    git clone https://github.com/cumulusnetworks/cldemo-vagrant
+    cd cldemo-vagrant
+    vagrant up
+    vagrant ssh oob-mgmt-server
+    sudo su - cumulus
+    sudo apt-get install ansible
+    git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
+    cd cldemo-docker-quagga
+    ansible-playbook run-demo.yml
+    ssh server01
+    ping 10.0.0.32
+    cat index.html
+
+
 Before you start
 ----------------
 This demo requires you set up a topology as per the diagram below:
@@ -31,9 +51,7 @@ https://docs.ansible.com/ansible/intro_installation.html
 Running the Demo
 ----------------
 On the management server, download the demo and cd into the top directory.
-There are two demo playbooks: `demo-docker-vrouter` and
-`demo-docker-privileged`. To run them, run the command:
-`ansible-playbook <DEMO>.yml -k --ask-sudo-pass`.
+Run the command: `ansible-playbook run-demo.yml`.
 
 After running one demo, you will need to log into the servers and delete the
 Docker containers before you can create another one. You can do this with the
@@ -50,15 +68,3 @@ the package natively. Since the Cumulus version of Quagga is often ahead of the
 official release, it can be packaged into a Docker container without needing to
 change the package sources of the host or compile it from source on a non-debian
 machine.
-
-### docker-vrouter
-This variant of the docker quagga demo leverages Docker and Quagga to create
-a lightweight Virtual Router on the server. In this example, we create a
-VRouter in order to connect other Docker containers on the host to the Layer 3
-fabric, making it possible for a container on server01 to ping a container on
-server02 by travelling through docker-router-1, one of the leafs, down through
-docker-router-2, and on to its final destination.
-
-The setup is fairly complicated, but the advantage is that this allows a
-Docker container to be used as a virtual Cumulus switch, which is slightly more
-efficient than a fully virtual solution such as VX.

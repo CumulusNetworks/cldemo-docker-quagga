@@ -1,8 +1,0 @@
-graph topology{
-
-   "server01":"eth1" -- "leaf01":"swp1"
-   "server01":"eth2" -- "leaf02":"swp1"
-   "server02":"eth1" -- "leaf01":"swp2"
-   "server02":"eth2" -- "leaf02":"swp2"
-
-}
