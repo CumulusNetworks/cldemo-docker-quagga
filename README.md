@@ -14,6 +14,7 @@ Quickstart: Run the demo
     vagrant up oob-mgmt-server oob-mgmt-switch leaf01 leaf02 leaf03 leaf04 spine01 spine02 server01 server02 server03 server04
     vagrant ssh oob-mgmt-server
     sudo su - cumulus
+    echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' | sudo tee /etc/apt/sources.list.d/ppa_ansible.list -a
     sudo apt-get install ansible python-netaddr -qy
     git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
     cd cldemo-docker-quagga
