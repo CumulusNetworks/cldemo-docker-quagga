@@ -1,6 +1,6 @@
 
 - name: install python-netaddr
-  apt: name=python-netaddr state=present
+  apt: name=python-netaddr state=present update_cache=yes
 
 
 ###
