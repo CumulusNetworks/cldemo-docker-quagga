@@ -1,8 +1,4 @@
 
-- name: install python-netaddr
-  apt: name=python-netaddr state=present update_cache=yes
-
-
 ###
 - name: configure /etc/network/interfaces (using legacy ifupdown)
   template: src=interfaces.j2 dest=/etc/network/interfaces
