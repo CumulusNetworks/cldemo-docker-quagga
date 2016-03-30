@@ -6,6 +6,9 @@
 
 auto lo
 iface lo inet loopback
+
+auto lo:0
+iface lo:0 inet loopback
 {% if loopback_ip is defined -%}
   address {{ loopback_ip }}
   netmask 255.255.255.255
