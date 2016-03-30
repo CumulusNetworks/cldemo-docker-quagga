@@ -1,0 +1,46 @@
+
+###
+- name: configure /etc/network/interfaces (using legacy ifupdown)
+  template: src=interfaces.j2 dest=/etc/network/interfaces
+  notify: reload networking legacy
+
+
+### install docker
+- name: get the docker debian repo's public key
+  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: add docker debian repo to sources
+  template: src=docker.list.j2 dest=/etc/apt/sources.list.d/docker.list
+
+- name: run apt-get update to add docker to list of available packages
+  apt: update_cache=yes
+
+- name: install docker
+  apt: name=docker-engine state=present
+
+
+### start docker
+- name: start the docker daemon if it isn't already running
+  service: name=docker state=started
+
+
+
+### start the container
+- name: create docker containers
+  shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/docker-router /bin/bash
+  ignore_errors: yes
+
+- name: start docker containers (in case not running)
+  shell: docker start quagga_docker
+  ignore_errors: yes
+
+
+### configure docker-quagga
+- name: configure quagga
+  template: src=quagga_config.j2 dest=/root/Quagga.conf
+
+- name: copy quagga configuration to container
+  shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf
+
+- name: restart quagga on container
+  shell: docker exec quagga_docker service quagga restart

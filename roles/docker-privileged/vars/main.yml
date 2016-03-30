@@ -1,0 +1,18 @@
+quagga:
+    interfaces:
+        server01:
+            loopback: "10.2.1.3"
+            int_numbered:
+              eth1:
+                ip_and_mask: "10.1.1.2/30"
+              eth2:
+                ip_and_mask: "10.1.1.18/30"
+        server02:
+            loopback: "10.2.1.4"
+            int_numbered:
+              eth1:
+                ip_and_mask: "10.1.1.6/30"
+              eth2:
+                ip_and_mask: "10.1.1.22/30"
+docker:
+    version: ubuntu-trusty

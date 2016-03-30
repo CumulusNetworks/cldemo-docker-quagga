@@ -1,0 +1,39 @@
+{% set intvars = quagga.interfaces[ansible_hostname] -%}
+{% set loopback_ip = intvars.loopback -%}
+{% set int_numbered = intvars.int_numbered -%}
+{% if intvars.bridges is defined -%}
+{% set swbridges = intvars.bridges -%}
+{% endif -%}
+
+{% if int_numbered is defined -%}
+{% for item in int_numbered -%}
+interface lo
+  ip ospf area 0.0.0.0
+interface {{item}}
+  ip ospf network point-to-point
+  ip ospf area 0.0.0.0
+!
+{% endfor -%}
+{% endif -%}
+!
+!
+!
+{% if swbridges is defined and is_leaf is defined -%}
+{% for item in swbridges.vlan_aware.svi -%}
+interface {{item }}
+  ip ospf network point-to-point
+  ip ospf area 0.0.0.0
+!
+{% endfor -%}
+{% endif -%}
+!
+router-id {{ loopback_ip }}
+router ospf
+  ospf router-id {{ loopback_ip }}
+{% if swbridges is defined -%}
+
+{% for item in swbridges.vlan_aware.svi %}
+  passive-interface {{ item }}
+{% endfor %}
+{% endif -%}
+!

@@ -1,0 +1,10 @@
+- name: configure /etc/network/interfaces
+  template: src=interfaces.j2 dest=/etc/network/interfaces
+  notify: reload networking
+
+- name: configure quagga daemons file
+  copy: src=quagga_daemon dest=/etc/quagga/daemons
+
+- name: configure quagga configuration
+  template: src=quagga_config.j2 dest=/etc/quagga/Quagga.conf
+  notify: restart quagga

@@ -1,0 +1,6 @@
+
+- name: reload networking
+  service: name=networking state=restarted
+
+- name: reload networking legacy
+  command: ifdown -a && ifup -a

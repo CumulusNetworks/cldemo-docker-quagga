@@ -1,0 +1,94 @@
+{
+    "cabling": [
+        {
+            "dest_host": "leaf01",
+            "dest_iface": "swp1",
+            "src_host": "server01",
+            "src_iface": "eth1"
+        },
+        {
+            "dest_host": "leaf01",
+            "dest_iface": "swp2",
+            "src_host": "server02",
+            "src_iface": "eth1"
+        },
+        {
+            "dest_host": "leaf02",
+            "dest_iface": "swp1",
+            "src_host": "server01",
+            "src_iface": "eth2"
+        },
+        {
+            "dest_host": "leaf02",
+            "dest_iface": "swp2",
+            "src_host": "server02",
+            "src_iface": "eth2"
+        }
+    ],
+    "devices": [
+        {
+            "device_type": "switch",
+            "hostname": "leaf01",
+            "macs": [
+                "A0:00:00:00:00:01"
+            ],
+            "mapping": [
+                "swp1",
+                "swp2",
+                "swp45",
+                "swp46",
+                "swp47",
+                "swp48",
+                "swp49",
+                "swp50",
+                "swp51",
+                "swp52"
+            ],
+            "mgmt_ip": "192.168.0.11",
+            "nics": 10,
+            "operating_system": "cumulusvx-2.5.3"
+        },
+        {
+            "device_type": "switch",
+            "hostname": "leaf02",
+            "macs": [
+                "A0:00:00:00:00:02"
+            ],
+            "mapping": [
+                "swp1",
+                "swp2",
+                "swp45",
+                "swp46",
+                "swp47",
+                "swp48",
+                "swp49",
+                "swp50",
+                "swp51",
+                "swp52"
+            ],
+            "mgmt_ip": "192.168.0.12",
+            "nics": 10,
+            "operating_system": "cumulusvx-2.5.3"
+        },
+        {
+            "device_type": "server",
+            "hostname": "server01",
+            "macs": [
+                "A0:00:00:00:00:07"
+            ],
+            "mgmt_ip": "192.168.0.31", 
+            "nics": 2,
+            "operating_system": "ubuntu-trusty"
+        },
+        {
+            "device_type": "server",
+            "hostname": "server02",
+            "macs": [
+                "A0:00:00:00:00:08"
+            ],
+            "mgmt_ip": "192.168.0.32",
+            "nics": 2,
+            "operating_system": "ubuntu-trusty"
+        }
+    ]
+}

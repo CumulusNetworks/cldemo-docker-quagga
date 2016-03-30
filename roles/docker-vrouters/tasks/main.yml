@@ -1,0 +1,103 @@
+###
+- name: set fact
+  set_fact: dvars="{{docker[ansible_hostname]}}" qvars="{{quagga.interfaces[ansible_hostname]}}"
+
+
+### install docker
+- name: get the docker debian repo's public key
+  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: add docker debian repo to sources
+  template: src=docker.list.j2 dest=/etc/apt/sources.list.d/docker.list
+
+- name: run apt-get update to add docker to list of available packages
+  apt: update_cache=yes
+
+- name: install docker
+  apt: name=docker-engine state=present
+
+
+### install other dependencies
+- name: install other packages
+  apt: name={{ item }} state=present
+  with_items:
+      - bridge-utils
+
+
+### start docker
+- name: start the docker daemon if it isn't already running
+  service: name=docker state=started
+
+
+### add the docker bridges.
+- name: create docker bridges (ignoring errors)
+  shell: docker network create --subnet {{ dvars.bridges[item].subnet }} {{ item }}
+  ignore_errors: yes
+  with_items: "{{ dvars.bridges_sorted }}"
+
+
+### rewire the docker bridges
+- name: remove ip addresses from anonymous bridges
+  shell: ip addr flush br-`docker network ls | grep {{ item }} | awk '{ print $1 }'`
+  when: "{{ not dvars.bridges[item].host_connected|default(None) }}"
+  with_items: "{{ dvars.bridges_sorted }}"
+
+- name: turn on physical interfaces
+  command: ip link set up dev {{ item }}
+  with_items: "{{ dvars.physical_interfaces }}"
+
+- name: attach physical interfaces to bridges
+  shell: brctl addif br-`docker network ls | grep {{ dvars.physical_interfaces[item] }} | awk '{ print $1 }'` {{ item }}
+  ignore_errors: yes
+  with_items: "{{ dvars.physical_interfaces }}"
+
+
+### start the containers
+- name: create docker containers
+  shell: docker run -t -i -d --net={{ dvars.containers[item].network }} {% if dvars.containers[item].netcap|default(None) %}--cap-add=NET_ADMIN --cap-add=NET_RAW --cap-add=SYS_ADMIN --cap-add=NET_BROADCAST{% endif %} --name={{ item }} {{ dvars.containers[item].os }} {{ dvars.containers[item].command }}
+  with_items: "{{ dvars.containers }}"
+  ignore_errors: yes
+
+- name: start docker containers (in case not running)
+  shell: docker start {{item}}
+  with_items: "{{ dvars.containers }}"
+  ignore_errors: yes
+
+- name: put the swps on the docker-router
+  shell: docker network connect {{ item }} {{ dvars.vrouter }}
+  with_items: "{{ dvars.bridges_sorted[1:] }}"
+  ignore_errors: yes
+
+
+### configure docker-router interfaces. must be done post build since you
+#   can't put privileged operations in a Dockerfile
+- name: rename eth to swp on docker
+  shell: docker exec {{ dvars.vrouter }} sh -c 'ip link set down dev {{ item }} && ip link set dev {{ item }} name {{ dvars.virtual_interfaces[item] }} && ip link set up dev {{ dvars.virtual_interfaces[item] }}'
+  with_items: "{{ dvars.virtual_interfaces }}"
+  ignore_errors: yes
+
+- name: flush IP addresses of vswps
+  shell: docker exec {{ dvars.vrouter }} ip address flush dev {{ item }}
+  with_items: "{{ qvars.int_numbered }}"
+
+- name: set IP addresses of vswps
+  shell: docker exec {{ dvars.vrouter }} ip address add {{ qvars.int_numbered[item].ip_and_mask }} dev {{ item }}
+  with_items: "{{ qvars.int_numbered }}"
+
+- name: set IP addresses of loopback (for ospfnum)
+  shell: docker exec {{ dvars.vrouter }} ip address add {{ qvars.loopback }}/32 dev lo
+  ignore_errors: yes
+
+
+### configure and start quagga on docker-router
+- name: set up NAT for the docker router
+  shell: docker exec {{ dvars.vrouter }} iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+- name: configure quagga
+  template: src=quagga_config.j2 dest=/root/Quagga.conf
+
+- name: copy quagga configuration to container
+  shell: docker cp /root/Quagga.conf {{dvars.vrouter}}:/etc/quagga/Quagga.conf
+
+- name: restart quagga on container
+  shell: docker exec {{dvars.vrouter}} service quagga restart

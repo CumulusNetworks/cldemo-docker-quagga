@@ -1,0 +1,16 @@
+quagga:
+    interfaces:
+      leaf01:
+        loopback: "10.2.1.1"
+        int_numbered:
+          swp1:
+            ip_and_mask: "10.1.1.1/30"
+          swp2:
+            ip_and_mask: "10.1.1.5/30"
+      leaf02:
+        loopback: "10.2.1.2"
+        int_numbered:
+          swp1:
+            ip_and_mask: "10.1.1.17/30"
+          swp2:
+            ip_and_mask: "10.1.1.21/30"

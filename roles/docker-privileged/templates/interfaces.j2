@@ -1,0 +1,24 @@
+{% set intvars = quagga.interfaces[ansible_hostname] %}
+{% set loopback_ip = intvars.loopback -%}
+{% if intvars.bridges is defined -%}
+{% set swbridges = intvars.bridges -%}
+{% endif -%}
+
+auto lo
+iface lo inet loopback
+{% if loopback_ip is defined -%}
+  address {{ loopback_ip }}
+{% endif -%}
+
+auto eth0
+iface eth0 inet dhcp
+
+
+{% if intvars.int_numbered is defined -%}
+{% for intname in intvars.int_numbered.keys() -%}
+auto {{ intname }}
+iface {{ intname }} inet static
+  address {{ intvars.int_numbered[intname].ip_and_mask | ipaddr('address') }}
+  netmask {{ intvars.int_numbered[intname].ip_and_mask | ipaddr('netmask') }}
+{% endfor -%}
+{% endif -%}
