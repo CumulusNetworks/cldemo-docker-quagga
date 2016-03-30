@@ -14,7 +14,7 @@ Quickstart: Run the demo
     vagrant up
     vagrant ssh oob-mgmt-server
     sudo su - cumulus
-    sudo apt-get install ansible
+    sudo apt-get install ansible -qy
     git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
     cd cldemo-docker-quagga
     ansible-playbook run-demo.yml
