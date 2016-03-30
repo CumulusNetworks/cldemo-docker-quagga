@@ -6,6 +6,9 @@
 
 auto lo
 iface lo inet loopback
+
+auto lo2
+iface lo2 inet loopback
 {% if loopback_ip is defined -%}
   address {{ loopback_ip }}
 {% endif -%}

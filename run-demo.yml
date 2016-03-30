@@ -5,13 +5,9 @@
   become_method: sudo
   roles:
     - docker-privileged
-  handlers:
-    - include : handlers/main.yml
 - hosts: leaf
   user: cumulus
   become: yes
   become_method: sudo
   roles:
     - switches
-  handlers:
-    - include : handlers/main.yml

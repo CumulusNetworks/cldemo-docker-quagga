@@ -1,3 +1,7 @@
+# This step ensures that the quagga daemon is running.
+- name: ensure quagga is running
+  service: name=quagga state=started
+
 - name: configure /etc/network/interfaces
   template: src=interfaces.j2 dest=/etc/network/interfaces
   notify: reload networking
