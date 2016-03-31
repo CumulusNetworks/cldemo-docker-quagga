@@ -27,17 +27,7 @@ Before you start
 ----------------
 This demo requires you set up a topology as per the diagram below:
 
-             +------------+       +------------+
-             | leaf01     |       | leaf02     |
-             |            |       |            |
-             +------------+       +------------+
-             swp1 |    swp2 \   / swp1    | swp2
-                  |           X           |
-             eth1 |    eth2 /   \ eth1    | eth2
-             +------------+       +------------+
-             | server01   |       | server02   |
-             |            |       |            |
-             +------------+       +------------+
+
 
 This topology is also described in the `topology.dot` and `topology.json` files.
 Additionally, an out of band management server that can SSH into the leafs and

@@ -1,13 +1,28 @@
 ---
-- hosts: host
+- hosts: leafs
   user: cumulus
   become: yes
   become_method: sudo
   roles:
-    - docker-privileged
-- hosts: leaf
+    - ifupdown2
+    - quagga
+- hosts: spines
   user: cumulus
   become: yes
   become_method: sudo
   roles:
-    - switches
+    - ifupdown2
+    - quagga
+- hosts: servers
+  user: cumulus
+  become: yes
+  become_method: sudo
+  roles:
+    - ifupdown
+    - quagga-docker
+- hosts: server02
+  user: cumulus
+  become: yes
+  become_method: sudo
+  roles:
+    - apache

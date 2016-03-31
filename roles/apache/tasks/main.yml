@@ -1,0 +1,12 @@
+# One of the key tasks of automation are to install and configure services on
+# servers. This example installs apache webserver with no custom configuration
+# on one of the servers. If apache2 is already installed, this step is skipped.
+- name: install apache2
+  apt: name=apache2 update_cache=yes
+
+# If apache is not running, this starts it. Automation can be used to force a
+# a server into a consistent state - if apache crashed or stopped running for
+# any reason, this playbook will attempt to get it running again. If it's already
+# running, this step is skipped.
+- name: run apache2
+  service: name=apache2 state=started
