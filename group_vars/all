@@ -1,5 +1,7 @@
 # networking
 networks: []
+docker:
+    version: ubuntu-trusty
 interfaces:
     leaf01:
         loopback: "10.0.0.11"
