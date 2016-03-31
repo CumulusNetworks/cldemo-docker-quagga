@@ -1,5 +1,21 @@
 # networking
-networks: []
+networks:
+    "10.2.0.0/31":
+        source: "leaf01"
+    "10.2.0.4/31":
+        source: "leaf01"
+    "10.2.0.2/31":
+        source: "leaf02"
+    "10.2.0.6/31":
+        source: "leaf02"
+    "10.2.0.8/31":
+        source: "leaf03"
+    "10.2.0.12/31":
+        source: "leaf03"
+    "10.2.0.10/31":
+        source: "leaf04"
+    "10.2.0.14/31":
+        source: "leaf04"
 docker:
     version: ubuntu-trusty
 interfaces:
