@@ -30,7 +30,27 @@ Before you start
 ----------------
 This demo requires you set up a topology as per the diagram below:
 
-
+                     +--------------+  +--------------+
+                     | spine01      |  | spine02      |
+                     |              |  |              |
+                     +--------------+  +--------------+
+                    swp1-4 ||||                |||| swp1-4
+             +---------------------------------+|||
+             |             ||||+----------------+|+----------------+
+             |             |||+---------------------------------+  |
+          +----------------+|+----------------+  |              |  |
+    swp51 |  | swp52  swp51 |  | swp52  swp51 |  | swp52  swp51 |  | swp52
+    +--------------+  +--------------+  +--------------+  +--------------+
+    | leaf01       |  | leaf02       |  | leaf03       |  | leaf04       |
+    |              |  |              |  |              |  |              |
+    +--------------+  +--------------+  +--------------+  +--------------+
+      swp1 |  swp2 \ / swp1 | swp2       swp1 |   swp2 \ / swp1 | swp2
+           |        X       |                 |         X       |
+      eth1 |  eth2 / \ eth1 | eth2       eth1 |   eth2 / \ eth1 | eth2
+    +--------------+  +--------------+  +--------------+  +--------------+
+    | server01     |  | server02     |  | server03     |  | server04     |
+    |              |  |              |  |              |  |              |
+    +--------------+  +--------------+  +--------------+  +--------------+
 
 This topology is also described in the `topology.dot` and `topology.json` files.
 Additionally, an out of band management server that can SSH into the leafs and
