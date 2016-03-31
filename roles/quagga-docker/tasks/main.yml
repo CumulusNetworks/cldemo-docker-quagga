@@ -32,7 +32,7 @@
 
 ### configure docker-quagga
 - name: configure quagga
-  template: src=quagga_config.j2 dest=/root/Quagga.conf
+  template: src=Quagga.conf.j2 dest=/root/Quagga.conf
 
 - name: copy quagga configuration to container
   shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf

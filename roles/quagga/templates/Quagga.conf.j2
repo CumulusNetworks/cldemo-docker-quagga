@@ -3,6 +3,9 @@
 router bgp {{ intvars.asn }}
     bgp router-id {{ intvars.loopback }}
     network {{ intvars.loopback }}/32
+{% for neighbor in intvars.neighbors %}
+    network {{ intvars.neighbors[neighbor].ip }}
+{% endfor %}
 {% for network in networks %}
 {% if networks[network].source == ansible_hostname %}
     network {{ network }}
