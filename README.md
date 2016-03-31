@@ -17,7 +17,7 @@ Quickstart: Run the demo
     sudo apt-get install software-properties-common -qy
     sudo apt-add-repository ppa:ansible/ansible -y
     sudo apt-get update
-    sudo apt-get install ansible python-netaddr -qy
+    sudo apt-get install ansible -qy
     git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
     cd cldemo-docker-quagga
     ansible-playbook run-demo.yml

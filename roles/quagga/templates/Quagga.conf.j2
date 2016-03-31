@@ -1,5 +1,11 @@
 {% set intvars = interfaces[ansible_hostname] -%}
 !
+{% for neighbor in intvars.neighbors %}
+interface {{ neighbor }}
+ no ipv6 nd suppress-ra
+ ipv6 nd ra-interval 3
+!
+{% endfor %}
 router bgp {{ intvars.asn }}
     bgp router-id {{ intvars.loopback }}
     network {{ intvars.loopback }}/32
@@ -13,15 +19,24 @@ router bgp {{ intvars.asn }}
     bgp bestpath compare-routerid
     neighbor fabric peer-group
     neighbor fabric description Internal Fabric Network
+    neighbor fabric capability extended-nexthop
     neighbor fabric advertisement-interval 0
     neighbor fabric timers 1 3
     neighbor fabric timers connect 3
+    neighbor fabric remote-as external
     neighbor fabric prefix-list dc-fabric-in in
     neighbor fabric prefix-list dc-fabric-out out
 {% for neighbor in intvars.neighbors %}
-    neighbor {{ intvars.neighbors[neighbor].peer }} peer-group fabric
-    neighbor {{ intvars.neighbors[neighbor].peer }} remote-as external
+    neighbor {{ neighbor }} interface
+    neighbor {{ neighbor }} peer-group fabric
 {% endfor %}
+!
+address-family ipv6 unicast
+  neighbor fabric activate
+{% for neighbor in intvars.neighbors %}
+  neighbor {{ neighbor }} activate
+{% endfor %}
+exit-address-family
 !
 ip prefix-list dc-fabric-in seq 10 permit 0.0.0.0/0
 ip prefix-list dc-fabric-in seq 20 permit 10.0.0.0/24 le 32

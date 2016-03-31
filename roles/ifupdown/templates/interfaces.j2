@@ -17,6 +17,5 @@ iface eth0 inet dhcp
 {% for iface in intvars['neighbors'] %}
 auto {{ iface }}
 iface {{ iface }} inet static
-    address {{ intvars['neighbors'][iface].ip }}
-    netmask {{ intvars['neighbors'][iface].mask }}
+    address {{ intvars.loopback }}
 {% endfor %}
