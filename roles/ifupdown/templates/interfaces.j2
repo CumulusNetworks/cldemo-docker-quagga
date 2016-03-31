@@ -10,9 +10,9 @@ iface eth0 inet dhcp
     post-up ip route add default via 192.168.0.1
 
 
-{% for iface in intvars %}
+{% for iface in intvars['neighbors'] %}
 auto {{ iface }}
 iface {{ iface }} inet static
-    address {{ intvars[iface].ip }}
-    netmask {{ intvars[iface].mask }}
+    address {{ intvars['neighbors'][iface].ip }}
+    netmask {{ intvars['neighbors'][iface].mask }}
 {% endfor %}
