@@ -14,7 +14,7 @@ Quickstart: Run the demo
     vagrant up oob-mgmt-server oob-mgmt-switch leaf01 leaf02 leaf03 leaf04 spine01 spine02 server01 server02 server03 server04
     vagrant ssh oob-mgmt-server
     sudo su - cumulus
-    sudo apt-get install software-properties-common
+    sudo apt-get install software-properties-common -qy
     sudo apt-add-repository ppa:ansible/ansible -y
     sudo apt-get update
     sudo apt-get install ansible python-netaddr -qy
@@ -22,7 +22,7 @@ Quickstart: Run the demo
     cd cldemo-docker-quagga
     ansible-playbook run-demo.yml
     ssh server01
-    ping 10.0.0.32
+    wget 10.0.0.32
     cat index.html
 
 

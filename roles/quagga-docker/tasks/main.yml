@@ -1,9 +1,4 @@
 
-###
-- name: configure /etc/network/interfaces (using legacy ifupdown)
-  template: src=interfaces.j2 dest=/etc/network/interfaces
-  notify: reload networking legacy
-
 
 ### install docker
 - name: get the docker debian repo's public key
