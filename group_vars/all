@@ -8,97 +8,49 @@ interfaces:
         asn: 65011
         neighbors:
             swp1:
-                ip: "10.2.0.0/31"
-                peer: "10.2.0.1"
             swp2:
-                ip: "10.2.0.4/31"
-                peer: "10.2.0.5"
             swp51:
-                ip: "10.1.0.1/31"
-                peer: "10.1.0.0"
             swp52:
-                ip: "10.1.0.3/31"
-                peer: "10.1.0.2"
     leaf02:
         loopback: "10.0.0.12"
         asn: 65012
         neighbors:
             swp1:
-                ip: "10.2.0.2/31"
-                peer: "10.2.0.3"
             swp2:
-                ip: "10.2.0.6/31"
-                peer: "10.2.0.7"
             swp51:
-                ip: "10.1.0.5/31"
-                peer: "10.1.0.4"
             swp52:
-                ip: "10.1.0.7/31"
-                peer: "10.1.0.6"
     leaf03:
         loopback: "10.0.0.13"
         asn: 65013
         neighbors:
             swp1:
-                ip: "10.2.0.8/31"
-                peer: "10.2.0.9"
             swp2:
-                ip: "10.2.0.12/31"
-                peer: "10.2.0.13"
             swp51:
-                ip: "10.1.0.9/31"
-                peer: "10.1.0.8"
             swp52:
-                ip: "10.1.0.11/31"
-                peer: "10.1.0.10"
     leaf04:
         loopback: "10.0.0.14"
         asn: 65014
         neighbors:
             swp1:
-                ip: "10.2.0.10/31"
-                peer: "10.2.0.11"
             swp2:
-                ip: "10.2.0.14/31"
-                peer: "10.2.0.15"
             swp51:
-                ip: "10.1.0.13/31"
-                peer: "10.1.0.12"
             swp52:
-                ip: "10.1.0.15/31"
-                peer: "10.1.0.14"
     spine01:
         loopback: "10.0.0.21"
         asn: 65020
         neighbors:
             swp1:
-                ip: "10.1.0.0/31"
-                peer: "10.1.0.1"
             swp2:
-                ip: "10.1.0.4/31"
-                peer: "10.1.0.5"
             swp3:
-                ip: "10.1.0.8/31"
-                peer: "10.1.0.9"
             swp4:
-                ip: "10.1.0.12/31"
-                peer: "10.1.0.13"
     spine02:
         loopback: "10.0.0.22"
         asn: 65020
         neighbors:
             swp1:
-                ip: "10.1.0.2/31"
-                peer: "10.1.0.3"
             swp2:
-                ip: "10.1.0.6/31"
-                peer: "10.1.0.7"
             swp3:
-                ip: "10.1.0.10/31"
-                peer: "10.1.0.11"
             swp4:
-                ip: "10.1.0.14/31"
-                peer: "10.1.0.15"
     server01:
         loopback: "10.0.0.31"
         asn: 65031
