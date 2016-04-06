@@ -42,14 +42,14 @@ ip prefix-list dc-fabric-in seq 10 permit 0.0.0.0/0
 ip prefix-list dc-fabric-in seq 20 permit 10.0.0.0/24 le 32
 {% for network in networks %}
 {% if networks[network].source != ansible_hostname %}
-ip prefix-list dc-fabric-in seq {{ loop.index*10 + 20 }} permit {{ network }}
+ip prefix-list dc-fabric-in seq {{ loop.index*10 + 100 }} permit {{ network }}
 {% endif %}
 {% endfor %}
 ip prefix-list dc-fabric-in seq 500 deny any
 ip prefix-list dc-fabric-out seq 10 permit 10.0.0.0/24 le 32
 {% for network in networks %}
 {% if not intvars.get('networks', None) or networks[network].source == ansible_hostname %}
-ip prefix-list dc-fabric-out seq {{ loop.index*10 + 20 }} permit {{ network }}
+ip prefix-list dc-fabric-out seq {{ loop.index*10 + 100 }} permit {{ network }}
 {% endif %}
 {% endfor %}
 ip prefix-list dc-fabric-out seq 500 deny any
