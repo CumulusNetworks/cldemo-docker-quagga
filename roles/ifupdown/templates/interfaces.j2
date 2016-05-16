@@ -7,7 +7,7 @@ iface lo inet loopback
 
 auto lo
 iface lo inet static
-    address {{ intvars['loopback'] }}
+    address {{ intvars['loopback'] }}/32
 
 auto eth0
 iface eth0 inet dhcp
@@ -17,5 +17,5 @@ iface eth0 inet dhcp
 {% for iface in intvars['neighbors'] %}
 auto {{ iface }}
 iface {{ iface }} inet static
-    address {{ intvars.loopback }}
+    address {{ intvars.loopback }}/32
 {% endfor %}

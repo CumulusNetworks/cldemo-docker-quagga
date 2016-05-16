@@ -15,8 +15,7 @@ router bgp {{ intvars.asn }}
 {% endif %}
 {% endfor %}
     maximum-paths 64
-    bgp bestpath as-path multipath-relax
-    bgp bestpath compare-routerid
+    bgp bestpath as-path multipath-relax no-as-set
     neighbor fabric peer-group
     neighbor fabric description Internal Fabric Network
     neighbor fabric capability extended-nexthop
@@ -46,6 +45,6 @@ ip prefix-list dc-fabric-in seq {{ loop.index*10 + 100 }} permit {{ network }}
 {% endif %}
 {% endfor %}
 ip prefix-list dc-fabric-in seq 500 deny any
-ip prefix-list dc-fabric-out seq 10 permit {{ intvars.loopback }}/24 le 32
+ip prefix-list dc-fabric-out seq 10 permit {{ intvars.loopback }}/32
 ip prefix-list dc-fabric-out seq 500 deny any
 !
