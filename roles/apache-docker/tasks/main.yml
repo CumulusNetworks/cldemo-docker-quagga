@@ -25,7 +25,7 @@
   template: src=index.php.j2 dest=/root/index.php
 
 - name: Copy Index.html into container
-  shell: docker cp /root/index.html quagga_docker:/var/www/html/index.html
+  shell: docker cp /root/index.html apache_docker:/var/www/html/index.html
 
 - name: Copy Index.PHP into container
-  shell: docker cp /root/index.php quagga_docker:/var/www/html/index.php
+  shell: docker cp /root/index.php apache_docker:/var/www/html/index.php
