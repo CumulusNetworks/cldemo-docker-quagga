@@ -1,38 +1,15 @@
-
-
-### install docker
-- name: get the docker debian repo's public key
-  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
-
-- name: add docker debian repo to sources
-  template: src=docker.list.j2 dest=/etc/apt/sources.list.d/docker.list
-
-- name: run apt-get update to add docker to list of available packages
-  apt: update_cache=yes
-
-- name: install docker
-  apt: name=docker-engine state=present
-
-
-### start docker
-- name: start the docker daemon if it isn't already running
-  service: name=docker state=started
-
-
 ### stop and/or delete previous quagga containers
-- name: Stop Quagga container
+- name: Stop Any Existing Quagga Containers
   shell: docker stop quagga_docker
   ignore_errors: yes
 
-### stop and/or delete previous quagga containers
-- name: Delete Quagga container
+- name: Delete Any Existing Quagga Docker Containers
   shell: docker rm quagga_docker
   ignore_errors: yes
 
 
-
 ### start the container
-- name: create docker containers
+- name: Create The Quagga Docker Container
   shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/docker-router /bin/bash
   ignore_errors: yes
 
@@ -42,11 +19,11 @@
 
 
 ### configure docker-quagga
-- name: configure quagga
+- name: Configure Quagga in Container
   template: src=Quagga.conf.j2 dest=/root/Quagga.conf
 
-- name: copy quagga configuration to container
+- name: Copy Quagga Configuration to Container
   shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf
 
-- name: restart quagga on container
+- name: Restart Quagga on Container
   shell: docker exec quagga_docker service quagga restart

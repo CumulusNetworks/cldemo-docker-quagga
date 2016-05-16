@@ -1,52 +1,31 @@
-
-
-### install docker
-- name: get the docker debian repo's public key
-  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
-
-- name: add docker debian repo to sources
-  template: src=docker.list.j2 dest=/etc/apt/sources.list.d/docker.list
-
-- name: run apt-get update to add docker to list of available packages
-  apt: update_cache=yes
-
-- name: install docker
-  apt: name=docker-engine state=present
-
-
-### start docker
-- name: start the docker daemon if it isn't already running
-  service: name=docker state=started
-
-
 ### stop and/or delete previous quagga containers
-- name: Stop Quagga container
-  shell: docker stop quagga_docker
+- name: Stop Any Existing Apache Containers
+  shell: docker stop apache_docker
   ignore_errors: yes
 
-### stop and/or delete previous quagga containers
-- name: Delete Quagga container
-  shell: docker rm quagga_docker
+- name: Delete Any Existing Apache Containers
+  shell: docker rm apache_docker
   ignore_errors: yes
-
-
 
 ### start the container
-- name: create docker containers
-  shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/docker-router /bin/bash
+- name: Create The Apache Container
+  shell: docker run -d -p 80:80 --name apache_docker php:5.6-apache
   ignore_errors: yes
 
 - name: start docker containers (in case not running)
-  shell: docker start quagga_docker
+  shell: docker start apache_docker
   ignore_errors: yes
 
 
 ### configure docker-quagga
-- name: configure quagga
-  template: src=Quagga.conf.j2 dest=/root/Quagga.conf
+- name: Copy Index.html into Server
+  template: src=index.html.j2 dest=/root/index.html
 
-- name: copy quagga configuration to container
-  shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf
+- name: Copy Index.PHP into Server
+  template: src=index.php.j2 dest=/root/index.php
 
-- name: restart quagga on container
-  shell: docker exec quagga_docker service quagga restart
+- name: Copy Index.html into container
+  shell: docker cp /root/index.html quagga_docker:/var/www/html/index.html
+
+- name: Copy Index.PHP into container
+  shell: docker cp /root/index.php quagga_docker:/var/www/html/index.php

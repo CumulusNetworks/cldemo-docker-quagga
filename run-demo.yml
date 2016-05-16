@@ -19,10 +19,16 @@
   become_method: sudo
   roles:
     - ifupdown
-    - quagga-docker
-- hosts: server02
+    - docker
+- hosts: servers
   user: cumulus
   become: yes
   become_method: sudo
   roles:
-    - apache
+    - quagga-docker
+- hosts: servers
+  user: cumulus
+  become: yes
+  become_method: sudo
+  roles:
+    - apache-docker

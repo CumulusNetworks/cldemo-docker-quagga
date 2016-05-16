@@ -19,34 +19,3 @@
   service: name=docker state=started
 
 
-### stop and/or delete previous quagga containers
-- name: Stop Quagga container
-  shell: docker stop quagga_docker
-  ignore_errors: yes
-
-### stop and/or delete previous quagga containers
-- name: Delete Quagga container
-  shell: docker rm quagga_docker
-  ignore_errors: yes
-
-
-
-### start the container
-- name: create docker containers
-  shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/docker-router /bin/bash
-  ignore_errors: yes
-
-- name: start docker containers (in case not running)
-  shell: docker start quagga_docker
-  ignore_errors: yes
-
-
-### configure docker-quagga
-- name: configure quagga
-  template: src=Quagga.conf.j2 dest=/root/Quagga.conf
-
-- name: copy quagga configuration to container
-  shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf
-
-- name: restart quagga on container
-  shell: docker exec quagga_docker service quagga restart
