@@ -7,25 +7,21 @@
   shell: docker rm apache_docker
   ignore_errors: yes
 
+### configure docker-quagga
+- name: Create html volume share on host
+  file: path=/root/html state=directory mode=0755
+
+- name: Copy Index.html into Server
+  template: src=index.html.j2 dest=/root/html/index.html
+
+- name: Copy Index.PHP into Server
+  template: src=index.php.j2 dest=/root/html/index.php
+
 ### start the container
 - name: Create The Apache Container
-  shell: docker run -d -p 80:80 --name apache_docker php:5.6-apache
+  shell: docker run -d -p 80:80 -v /root/html:/var/www/html --name apache_docker php:5.6-apache
   ignore_errors: yes
 
 - name: start docker containers (in case not running)
   shell: docker start apache_docker
   ignore_errors: yes
-
-
-### configure docker-quagga
-- name: Copy Index.html into Server
-  template: src=index.html.j2 dest=/root/index.html
-
-- name: Copy Index.PHP into Server
-  template: src=index.php.j2 dest=/root/index.php
-
-- name: Copy Index.html into container
-  shell: docker cp /root/index.html apache_docker:/var/www/html/index.html
-
-- name: Copy Index.PHP into container
-  shell: docker cp /root/index.php apache_docker:/var/www/html/index.php
