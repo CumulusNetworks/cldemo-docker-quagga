@@ -10,7 +10,7 @@
 
 ### start the container
 - name: Create The Quagga Docker Container
-  shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/quagga:trusty-latest /bin/bash
+  shell: docker run -t -i -d --net=host --privileged=true --name=quagga_docker cumulusnetworks/quagga:trusty-latest
   ignore_errors: yes
 
 - name: start docker containers (in case not running)
