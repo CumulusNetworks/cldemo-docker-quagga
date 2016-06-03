@@ -5,7 +5,7 @@ COPY quagga_0.99.23.1-1+cl3u2_precise_amd64.deb /root/
 COPY quagga-dbg_0.99.23.1-1+cl3u2_precise_amd64.deb /root/
 COPY quagga-doc_0.99.23.1-1+cl3u2_precise_all.deb /root/
 RUN apt-get update
-RUN apt-get install iptables iproute -y
+RUN apt-get install iptables iproute libcap2 libjson0 logrotate -y
 RUN dpkg -i /root/quagga_0.99.23.1-1+cl3u2_precise_amd64.deb
 RUN dpkg -i /root/quagga-dbg_0.99.23.1-1+cl3u2_precise_amd64.deb
 RUN dpkg -i /root/quagga-doc_0.99.23.1-1+cl3u2_precise_all.deb
