@@ -26,4 +26,4 @@
   shell: docker cp /root/Quagga.conf quagga_docker:/etc/quagga/Quagga.conf
 
 - name: Restart Quagga on Container
-  shell: docker exec quagga_docker /usr/lib/cumulus/
+  shell: docker exec quagga_docker /usr/lib/quagga/quagga start
