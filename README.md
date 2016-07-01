@@ -11,6 +11,7 @@ Quickstart: Run the demo
 
     git clone https://github.com/cumulusnetworks/cldemo-vagrant
     cd cldemo-vagrant
+    git checkout 2.5.x
     vagrant up oob-mgmt-server oob-mgmt-switch leaf01 leaf02 leaf03 leaf04 spine01 spine02 server01 server02 server03 server04
     vagrant ssh oob-mgmt-server
     sudo su - cumulus
@@ -20,6 +21,7 @@ Quickstart: Run the demo
     sudo apt-get install ansible -qy
     git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
     cd cldemo-docker-quagga
+    git checkout 2.5.x
     ansible-playbook run-demo.yml
     ssh server01
     wget 10.0.0.32
