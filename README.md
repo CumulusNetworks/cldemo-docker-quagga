@@ -18,7 +18,7 @@ Quickstart: Run the demo
     sudo apt-add-repository ppa:ansible/ansible -y
     sudo apt-get update
     sudo apt-get install ansible -qy
-    git clone https://github.com/cumulusnetworks/cldemo-docker-quagga
+    git clone https://github.com/cumulusnetworks/cldemo-roh-docker
     cd cldemo-docker-quagga
     ansible-playbook run-demo.yml
     ssh server01
