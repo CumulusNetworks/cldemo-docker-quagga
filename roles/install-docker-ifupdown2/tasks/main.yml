@@ -1,0 +1,26 @@
+- name: Install Docker Repo's Public Key
+  apt_key: keyserver=p80.pool.sks-keyservers.net id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Add Docker Sources
+  shell: echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" > /etc/apt/sources.list.d/docker.list
+
+- name: Install Docker, Ifupdown2 and PIP
+  apt: name={{item}} state=installed update_cache=yes
+  with_items:
+    - docker-engine
+    - ifupdown2
+    - python-pip
+
+- name: Add Docker-py Module
+  pip: name=docker-py
+
+- name: Allow IfUpdown2 to Run at Boot
+  lineinfile:
+    dest: "/lib/systemd/system/networking.service"
+    regexp: '^RemainAfterExit'
+    insertafter: '^\[Service\]'
+    line: 'RemainAfterExit=yes'
+
+- name: Start the Docker Daemon (if it isn't already running)
+  service: name=docker state=started
+

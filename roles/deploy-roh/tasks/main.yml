@@ -1,0 +1,41 @@
+- name: Create Quagga Shared Folder on Host
+  file: path=/root/quagga state=directory mode=0755
+
+# The quagga daemons file is a static file that specifies which subdaemons
+# are actually running (zebra, bgpd, ospf). This file is not required when
+# Quagga is being run using systemd.
+- name: configure quagga daemons file
+  copy: src=daemons dest=/root/quagga/daemons
+
+# This writes configuration to the Quagga configuration file using the
+# information in group_vars/all. The biggest difference between spine and
+# leaf configuration are the prefix lists - leafs should only advertise their
+# neighboring networks, but spines should advertise any networks they accept.
+# The 'leaf' variable handles this logic for us in our template.
+- name: Render a Quagga Config for the RoH Container
+  template: src=Quagga.conf.j2 dest=/root/quagga/Quagga.conf
+
+- name: Deploy ROH Container
+  docker_container:
+    name: cumulus-roh
+    privileged: true
+    interactive: true
+    network_mode: host
+    tty: true
+    recreate: yes
+    image: cumulusnetworks/quagga:latest
+    volumes:
+      - "/root/quagga/daemons:/etc/quagga/daemons"
+      - "/root/quagga/Quagga.conf:/etc/quagga/Quagga.conf"
+
+- name: Create a network with options
+  docker_network:
+    name: "{{interfaces[inventory_hostname].docker_network}}"
+    driver_options:
+      com.docker.network.bridge.name: "{{docker_networks[interfaces[inventory_hostname].docker_network].bridge_name}}"
+      com.docker.network.bridge.enable_icc: 'true'
+      com.docker.network.bridge.enable_ip_masquerade: 'false'
+      com.docker.network.driver.mtu: '9000'
+    ipam_options:
+      subnet: "{{docker_networks[interfaces[inventory_hostname].docker_network].subnet}}"
+      gateway: "{{docker_networks[interfaces[inventory_hostname].docker_network].gateway}}"

@@ -1,0 +1,101 @@
+# networking
+networks: []
+docker:
+    version: ubuntu-xenial
+interfaces:
+    leaf01:
+        loopback: "10.0.0.11"
+        asn: 65011
+        neighbors:
+            swp1:
+            swp2:
+            swp51:
+            swp52:
+    leaf02:
+        loopback: "10.0.0.12"
+        asn: 65012
+        neighbors:
+            swp1:
+            swp2:
+            swp51:
+            swp52:
+    leaf03:
+        loopback: "10.0.0.13"
+        asn: 65013
+        neighbors:
+            swp1:
+            swp2:
+            swp51:
+            swp52:
+    leaf04:
+        loopback: "10.0.0.14"
+        asn: 65014
+        neighbors:
+            swp1:
+            swp2:
+            swp51:
+            swp52:
+    spine01:
+        loopback: "10.0.0.21"
+        asn: 65020
+        neighbors:
+            swp1:
+            swp2:
+            swp3:
+            swp4:
+    spine02:
+        loopback: "10.0.0.22"
+        asn: 65020
+        neighbors:
+            swp1:
+            swp2:
+            swp3:
+            swp4:
+    server01:
+        loopback: "10.0.0.31"
+        asn: 65031
+        neighbors:
+            eth1:
+                ip: "10.2.0.1"
+                mask: "255.255.255.254"
+                peer: "10.2.0.0"
+            eth2:
+                ip: "10.2.0.3"
+                mask: "255.255.255.254"
+                peer: "10.2.0.2"
+    server02:
+        loopback: "10.0.0.32"
+        asn: 65032
+        neighbors:
+            eth1:
+                ip: "10.2.0.5"
+                mask: "255.255.255.254"
+                peer: "10.2.0.4"
+            eth2:
+                ip: "10.2.0.7"
+                mask: "255.255.255.254"
+                peer: "10.2.0.6"
+    server03:
+        loopback: "10.0.0.33"
+        asn: 65033
+        neighbors:
+            eth1:
+                ip: "10.2.0.9"
+                mask: "255.255.255.254"
+                peer: "10.2.0.8"
+            eth2:
+                ip: "10.2.0.11"
+                mask: "255.255.255.254"
+                peer: "10.2.0.10"
+    server04:
+        loopback: "10.0.0.34"
+        asn: 65034
+        neighbors:
+            eth1:
+                ip: "10.2.0.13"
+                mask: "255.255.255.254"
+                peer: "10.2.0.12"
+            eth2:
+                ip: "10.2.0.15"
+                mask: "255.255.255.254"
+                peer: "10.2.0.14"

@@ -1,4 +1,4 @@
-{% set intvars = interfaces[inventory_hostname] -%}
+{% set intvars = interfaces[ansible_hostname] -%}
 !
 {% for neighbor in intvars.neighbors %}
 interface {{ neighbor }}
@@ -12,10 +12,12 @@ router bgp {{ intvars.asn }}
 {% for neighbor in intvars.neighbors %}
     neighbor {{ neighbor }} interface remote-as external
 {% endfor %}
-{% if intvars.redistribute is defined %}
-{% for target in intvars.redistribute %}
-    redistribute {{target}}
+!
+address-family ipv6 unicast
+  neighbor fabric activate
+{% for neighbor in intvars.neighbors %}
+  neighbor {{ neighbor }} activate
 {% endfor %}
-{% endif %}
+exit-address-family
 !
 !

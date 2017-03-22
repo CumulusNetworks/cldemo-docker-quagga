@@ -4,3 +4,12 @@
 - name: configure /etc/network/interfaces
   template: src=interfaces.j2 dest=/etc/network/interfaces
   notify: reload networking
+
+- name: Bring Loopback Interface Up
+  shell: "ifup lo"
+
+- name: Bring Neighbor Interfaces Up
+  shell: "ifup {{item}}"
+  with_items: "{{ interfaces[inventory_hostname].neighbors }}"
+
+

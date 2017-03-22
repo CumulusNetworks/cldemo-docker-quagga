@@ -1,34 +1,19 @@
 ---
-- hosts: leafs
+- hosts: spines:leafs
   user: cumulus
   become: yes
   become_method: sudo
   roles:
-    - ifupdown2
+    - configure-interfaces
     - quagga
-- hosts: spines
-  user: cumulus
-  become: yes
-  become_method: sudo
-  roles:
-    - ifupdown2
-    - quagga
+
 - hosts: servers
   user: cumulus
   become: yes
   become_method: sudo
   roles:
-    - ifupdown
-    - docker
-- hosts: servers
-  user: cumulus
-  become: yes
-  become_method: sudo
-  roles:
-    - quagga-docker
-- hosts: servers
-  user: cumulus
-  become: yes
-  become_method: sudo
-  roles:
-    - apache-docker
+    - install-docker-ifupdown2
+    - configure-interfaces
+    - deploy-roh
+    - deploy-containers
+

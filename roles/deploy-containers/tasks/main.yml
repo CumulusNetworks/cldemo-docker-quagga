@@ -1,0 +1,22 @@
+- name: Create html shared folder on host
+  file: path=/root/html state=directory mode=0755
+
+- name: Copy index.php to Server
+  template: src=index.php.j2 dest=/root/html/index.php
+
+- name: Deploy Containers
+  docker_container:
+    name: "{{item}}"
+    interactive: true
+    volumes:
+      - "/root/html/index.php:/var/www/html/index.php:ro"
+    ports:
+     - "80"
+    tty: true
+    recreate: yes
+    image: php:5.6-apache
+    purge_networks: true
+    networks:
+      - name: "{{interfaces[inventory_hostname].docker_network}}"
+  with_sequence: start=1 end={{num_of_containers}} format=con%02d
+

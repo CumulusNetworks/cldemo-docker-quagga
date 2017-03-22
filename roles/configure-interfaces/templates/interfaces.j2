@@ -1,0 +1,16 @@
+{% set intvars = interfaces[inventory_hostname] %}
+# /etc/network/interfaces template for switches ({{ansible_hostname}})
+# Created by Ansible
+
+auto lo
+iface lo inet loopback
+  address {{ intvars.loopback }}/32
+
+auto eth0
+iface eth0 inet dhcp
+
+{% for iface in intvars.neighbors %}
+auto {{ iface }}
+iface {{ iface }}
+{% endfor %}
+

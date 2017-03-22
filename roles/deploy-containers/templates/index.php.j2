@@ -1,0 +1,7 @@
+<html>
+<body>
+<h1>HOST: {{inventory_hostname}} Container ID: <?php echo gethostname(); ?> </h1>
+<h1>
+Container IPv4 address: <?php system("ip -o addr show | grep 'inet ' | grep 'eth0' | awk '{print $4}'"); ?> </h1>
+</body>
+</html>
