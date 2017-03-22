@@ -1,10 +1,9 @@
 Redistributing Docker into Routing on The Host
 ===============================================
 This demo shows one of several different approaches to running Docker.
-This approach advertises host-routes for Docker containers which have been created on a docker-bridge without NAT enabled.
-Using this technique you can provide your containers with real IP addresses which are externally reachable and routed through the Host. 
+This approach advertises entire subnets employed by the docker bridges which are configured on different hosts. In this scenario NAT is not configured anywhere. Using this technique you can provide your containers with real IP addresses which are externally reachable and routed through the Host. 
 
-Cumulus Quagga is installed in a container along with the CRoHDAd daemon (Cumulus Routing On the Host Docker Advertisement Daemon). The CRoHDAd daemon listens to the docker-engine API and advertises new container IP addresses into the routed BGP fabric as they are created. When containers are destroyed, the daemon also removes the host-routes from the fabric.
+With Cumulus Quagga installed in a container, as docker bridges are created and destroyed Quagga will see the changes and modify the advertisements into the routed IP fabric.
 
 Using this technique you can deploy containers from a single large 172.16.0.0/16 subnet owned by multiple docker bridges on different hosts and located in different racks throughout the DC.
 
