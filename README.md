@@ -15,7 +15,7 @@ Using this technique you can deploy containers from a single large 172.16.0.0/16
 *On Servers:*
 * Ubuntu 16.04
 * Docker-CE v17.03
-* cumulusnetworks/quagga:crohdad (container image)
+* cumulusnetworks/quagga:latest (container image)
 * php:5.6-apache (container image)
 
 
@@ -32,60 +32,24 @@ vagrant up leaf01 leaf02 leaf03 leaf04 spine01 spine02 server01 server02 server0
 
 vagrant ssh oob-mgmt-server
 sudo su - cumulus
-sudo apt-get install software-properties-common -qy
-sudo apt-add-repository ppa:ansible/ansible -y
-sudo apt-get update -y
-sudo apt-get install ansible python-pip -qy
-sudo pip install ansible --upgrade
 
 git clone https://github.com/cumulusnetworks/cldemo-roh-docker
 cd cldemo-roh-docker
-git checkout crohdad
 
 ansible-playbook ./run-demo.yml
 ```
 ### Viewing the Results
 
-#### Watch The CRoHDAd Daemon Advertising Routes
-View the output of the CRoHDAd daemon as it is advertising /32 host-routes into the Quagga instance running in the same container.
+#### Check on the Cumulus Container
+View the configuration of the Quagga routing daemons in the container. Also look at BGP peerings.
 ```
 vagrant ssh oob-mgmt-server
 sudo su - cumulus
 ssh server01
-sudo docker logs crohdad
-
-cumulus@server01:~$ sudo docker logs crohdad
-Starting Quagga daemons (prio:10):. zebra. bgpd.
-Starting Quagga monitor daemon: watchquaggawatchquagga[32]: watchquagga 1.0.0+cl3u9 watching [zebra bgpd], mode [phased zebra restart]
-watchquagga[32]: bgpd state -> up : connect succeeded
-watchquagga[32]: zebra state -> up : connect succeeded
-watchquagga[32]: Watchquagga: Notifying Systemd we are up and running
-.
-Exiting from the script
-RUNNING CROHDAD: /root/crohdad.py -bl &
-
-################################################
-#                                              #
-#     Cumulus Routing On the Host              #
-#       Docker Advertisement Daemon            #
-#             --cRoHDAd--                      #
-#         originally written by Eric Pulvino   #
-#                                              #
-################################################
-
- STARTING UP.
-  Auto-Detecting existing containers and adding host routes...
-  Listening for Container Activity...
-
-
-[hit enter key to exit] or run 'docker stop <container>'
-STARTED -- Container id: 2ed5afcc86f48e1d7f35b2b940200a77f29e5957d6df743c64b53e38ef13f214
-    ADDING Host Route: 172.18.0.1/32 (from container: 2ed5afcc86f4)
-STARTED -- Container id: 4937317881fdbb746ec72fd25d1ac469eada8890da2f0c629f30394dfb04250e
-    ADDING Host Route: 172.18.0.2/32 (from container: 4937317881fd)
-STARTED -- Container id: b2c21cad49beb02289508631d4d64a090c66615a60c1f00f51590a008b150348
-    ADDING Host Route: 172.18.0.3/32 (from container: b2c21cad49be)
-
+# Check Configuration
+sudo docker exec -it cumulus-roh /usr/bin/vtysh -c "show run"
+# Check BGP Peers
+sudo docker exec -it cumulus-roh /usr/bin/vtysh -c "show ip bgp sum"
 ```
 
 #### Test Application Reachability
@@ -110,23 +74,20 @@ Container IPv4 address: 172.21.0.1/24
 ## Special Notes
 
 ### Privileged Mode Containers
-The CRoHDAd container is deployed as a privileged container with access to the "host" network. This means that the applications running in the container have unfettered access to the interfaces and kernel just like a real baremetal application would. This can be dangerous if the container were to become comprimised as the container essentially has root access.
+The Cumulus RoH container is deployed as a privileged container with access to the "host" network. This means that the applications running in the container have unfettered access to the interfaces and kernel just like a real baremetal application would. This can be dangerous if the container were to become comprimised as the container essentially has root access.
 
-### Exposing the Docker Unix Socket
-The docker CLI is essentially a client that communicates with the Dockerd daemon which runs in the background. That communication happens by default on Linux systems over a Unix Socket which behaves much like a webserver port. When running the CRoHDAd container it is necessary to share this Unix Socket file with the running container so that the docker CLI running inside the container can listen to the docker-engine API to learn about containers and networks as they are reated and destroyed.
-
-### Manually Starting and Stopping the CRoHDAd Container
-If you want to try running the CRoHDAd container in your own environment you can use the automation provided in this repository as a starting point or experiment manually with the container. Notice we're passing in the Quagga.conf file as well to configure the Quagga Routing Daemon upon container startup.
+### Manually Starting and Stopping the Cumulus RoH Container
+If you want to try running the Cumulus RoH container in your own environment you can use the automation provided in this repository as a starting point or experiment manually with the container. Notice we're passing in the Quagga.conf file as well to configure the Quagga Routing Daemon upon container startup.
 
 ```
 # Start the Container
-docker run -itd --name=crohdad --privileged --net=host \
-    -v /var/run/docker.sock:/var/run/docker.sock \
+docker run -itd --name=cumulus-roh --privileged --net=host \
+    -v root/quagga/daemons:/etc/quagga/daemons \
     -v /root/quagga/Quagga.conf:/etc/quagga/Quagga.conf \
-    cumulusnetworks/quagga:crohdad
+    cumulusnetworks/quagga:latest
 
 # Stop the Container
-docker rm -f crohdad
+docker rm -f cumulus-roh
 ```
 
 ASCII Demo Topology
