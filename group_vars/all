@@ -72,7 +72,7 @@ interfaces:
     server01:
       loopback: "10.0.0.31"
       asn: 65031
-      redistribute: ["connected"]
+      redistribute: "connected"
       neighbors:
         eth1:
         eth2:
@@ -80,7 +80,7 @@ interfaces:
     server02:
       loopback: "10.0.0.32"
       asn: 65032
-      redistribute: ["connected"]
+      redistribute: "connected"
       neighbors:
         eth1:
         eth2:
@@ -88,7 +88,7 @@ interfaces:
     server03:
       loopback: "10.0.0.33"
       asn: 65033
-      redistribute: ["connected"]
+      redistribute: "connected"
       neighbors:
         eth1:
         eth2:
@@ -96,7 +96,7 @@ interfaces:
     server04:
       loopback: "10.0.0.34"
       asn: 65034
-      redistribute: ["connected"]
+      redistribute: "connected"
       neighbors:
         eth1:
         eth2:

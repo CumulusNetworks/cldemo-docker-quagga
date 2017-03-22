@@ -12,10 +12,4 @@ router bgp {{ intvars.asn }}
 {% for neighbor in intvars.neighbors %}
     neighbor {{ neighbor }} interface remote-as external
 {% endfor %}
-{% if intvars.redistribute is defined %}
-{% for target in intvars.redistribute %}
-    redistribute {{target}}
-{% endfor %}
-{% endif %}
-!
 !

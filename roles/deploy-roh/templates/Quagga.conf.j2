@@ -1,4 +1,4 @@
-{% set intvars = interfaces[ansible_hostname] -%}
+{% set intvars = interfaces[inventory_hostname] -%}
 !
 {% for neighbor in intvars.neighbors %}
 interface {{ neighbor }}
@@ -11,13 +11,16 @@ router bgp {{ intvars.asn }}
     network {{ intvars.loopback }}/32
 {% for neighbor in intvars.neighbors %}
     neighbor {{ neighbor }} interface remote-as external
+    neighbor {{ neighbor }} filter-list HOST_ORIGINATED_ROUTES out
 {% endfor %}
+{% if intvars.redistribute is defined %}
+    redistribute {{intvars.redistribute}} route-map DOCKER_BRIDGES
+{% endif %}
 !
-address-family ipv6 unicast
-  neighbor fabric activate
-{% for neighbor in intvars.neighbors %}
-  neighbor {{ neighbor }} activate
-{% endfor %}
-exit-address-family
+ip as-path access-list HOST_ORIGINATED_ROUTES permit ^$
 !
+ip prefix-list SHARED_DOCKER_SUBNET seq 5 permit 172.16.0.0/16 le 32
+!
+route-map DOCKER_BRIDGES permit 10
+ match ip address prefix-list SHARED_DOCKER_SUBNET
 !
