@@ -5,7 +5,7 @@ This approach advertises entire subnets employed by the docker bridges which are
 
 With Cumulus Quagga installed in a container, as docker bridges are created and destroyed Quagga will see the changes and modify the advertisements into the routed IP fabric.
 
-Using this technique you can deploy containers from a single large 172.16.0.0/16 network.  Each host that may be located in different racks throught the DC owns a /26 subnet from that network and advertises its own subnet into the infrastructure.
+Using this technique you can deploy containers from a single large 172.16.0.0/16 network.  Each host that may be located in different racks throught the DC owns a /24 subnet from that network and advertises its own subnet into the infrastructure.
 
 ### Software in Use:
 *On Spines and Leafs:*
