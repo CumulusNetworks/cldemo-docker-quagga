@@ -1,5 +1,5 @@
-Redistributing Docker into Routing on The Host
-===============================================
+Redistributing Docker Bridges into Routing on The Host
+======================================================
 This demo shows one of several different approaches to running Docker.
 This approach advertises entire subnets employed by the docker bridges which are configured on different hosts. In this scenario NAT is not configured anywhere. Using this technique you can provide your containers with real IP addresses which are externally reachable and routed through the Host. 
 
