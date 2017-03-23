@@ -57,14 +57,14 @@ Here we are using PHP/Apache webservers to represent our container workloads. To
 vagrant ssh oob-mgmt-server
 sudo su - cumulus
 ssh server01
-curl 172.21.0.1
+curl 172.16.4.1
 
-cumulus@server01:~$ curl 172.21.0.1
+cumulus@server01:~$ curl 172.16.4.1
 <html>
 <body>
 <h1>HOST: server04 Container ID: 1e473deb7dc6 </h1>
 <h1>
-Container IPv4 address: 172.21.0.1/24
+Container IPv4 address: 172.16.4.1/24
  </h1>
 </body>
 </html>
@@ -120,6 +120,6 @@ Additionally, an out of band management server that can SSH into the leafs and
 spines via the specified hostnames is required. Setting up this topology is
 outside the scope of this document.
 
-This demo is written using Ansible 2.2. Install Ansible on the management server
+This demo was initially written using Ansible 2.2. Install Ansible on the management server
 before you begin. Instructions for installing Ansible can be found here:
 https://docs.ansible.com/ansible/intro_installation.html
