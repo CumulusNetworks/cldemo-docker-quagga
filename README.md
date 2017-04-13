@@ -81,7 +81,7 @@ If you want to try running the Cumulus RoH container in your own environment you
 ```
 # Start the Container
 docker run -itd --name=cumulus-roh --privileged --net=host \
-    -v root/quagga/daemons:/etc/quagga/daemons \
+    -v /root/quagga/daemons:/etc/quagga/daemons \
     -v /root/quagga/Quagga.conf:/etc/quagga/Quagga.conf \
     cumulusnetworks/quagga:latest
 
