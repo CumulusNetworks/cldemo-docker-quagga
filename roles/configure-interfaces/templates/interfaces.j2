@@ -12,5 +12,6 @@ iface eth0 inet dhcp
 {% for iface in intvars.neighbors %}
 auto {{ iface }}
 iface {{ iface }}
+  mtu 9216
 {% endfor %}
 
