@@ -86,6 +86,9 @@ docker run -itd --name=cumulus-roh --privileged --net=host \
     cumulusnetworks/quagga:latest
 
 # Stop the Container
+docker stop cumulus-roh
+
+# Remove the Container
 docker rm -f cumulus-roh
 ```
 
