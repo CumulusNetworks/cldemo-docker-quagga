@@ -17,6 +17,10 @@ Using this technique you can deploy containers from a single large 172.16.0.0/16
 * cumulusnetworks/quagga:latest (container image)
 * php:5.6-apache (container image)
 
+Network Topology
+----------------
+![Network Topology for RoH Docker demo ](https://github.com/CumulusNetworks/cldemo-roh-docker/blob/master/Docker_Redistribute_bridge.png)
+
 
 Quickstart: Run the demo
 ------------------------
