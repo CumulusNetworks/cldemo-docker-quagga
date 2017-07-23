@@ -8,5 +8,9 @@
 - name: Wait for switches to come back up
   local_action: wait_for port=22 host="{{ inventory_hostname }}" search_regex=OpenSSH delay=10
   
-- name: bring up loopback
-- name: bring up interfaces
+- name: Bring Loopback Interface Up
+  shell: "ifup lo"
+
+- name: Bring Neighbor Interfaces Up
+  shell: "ifup {{item}}"
+  with_items: "{{ interfaces[inventory_hostname].neighbors }}"
