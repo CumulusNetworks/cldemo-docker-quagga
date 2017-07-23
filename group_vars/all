@@ -6,19 +6,19 @@ docker_networks:
   network_a:
     bridge_name: "docker-neta"
     subnet: '172.16.1.0/26'
-    gateway: '172.16.1.1'
+    gateway: '172.16.1.62'
   network_b:
     bridge_name: "docker-netb"
     subnet: '172.16.2.0/26'
-    gateway: '172.16.2.1'
+    gateway: '172.16.2.62'
   network_c:
     bridge_name: "docker-netc"
     subnet: '172.16.3.0/26'
-    gateway: '172.16.3.1'
+    gateway: '172.16.3.62'
   network_d:
     bridge_name: "docker-netd"
     subnet: '172.16.4.0/26'
-    gateway: '172.16.4.1'
+    gateway: '172.16.4.62'
 
 interfaces:
     leaf01:
