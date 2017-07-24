@@ -8,12 +8,12 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet dhcp
-   vrf mgmt
+#   vrf mgmt
    
-auto mgmt
-iface mgmt
-   address 127.0.0.1/8
-   vrf-table auto   
+# auto mgmt
+# iface mgmt
+#    address 127.0.0.1/8
+#    vrf-table auto   
    
 {% for iface in intvars.neighbors %}
 auto {{ iface }}
