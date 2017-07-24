@@ -5,7 +5,8 @@
   become_method: sudo
   roles:
     - configure-interfaces
-    - restart-switches
+    - add-mgmt-vrf
+    # - restart-switches
     - mv-ntp-mgmt-vrf
     - quagga
 
@@ -15,7 +16,7 @@
   become_method: sudo
   roles:
     - install-docker-ifupdown2
-    - configure-interfaces-servers
+    - configure-interfaces
     - deploy-roh
     - deploy-containers
 
