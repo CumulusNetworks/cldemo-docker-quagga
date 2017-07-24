@@ -3,13 +3,13 @@
 # which interfaces are neighbors and networks come from the group_vars/all file.
 - name: configure /etc/network/interfaces
   template: src=interfaces.j2 dest=/etc/network/interfaces
-#  notify: reload networking
+  notify: reload networking
 
-#- name: Bring Loopback Interface Up
-#  shell: "ifup lo"
+- name: Bring Loopback Interface Up
+  shell: "ifup lo"
 
-#- name: Bring Neighbor Interfaces Up
-#  shell: "ifup {{item}}"
-#  with_items: "{{ interfaces[inventory_hostname].neighbors }}"
+- name: Bring Neighbor Interfaces Up
+  shell: "ifup {{item}}"
+  with_items: "{{ interfaces[inventory_hostname].neighbors }}"
 
 
