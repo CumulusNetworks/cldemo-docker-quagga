@@ -3,13 +3,15 @@ Redistributing Docker Bridges into Routing on The Host
 This demo shows one of several different approaches to running Docker.
 This approach advertises entire subnets employed by the docker bridges which are configured on different hosts. In this scenario NAT is not configured anywhere. Using this technique you can provide your containers with real IP addresses which are externally reachable and routed through the Host. 
 
+More information regarding this solution can be found in the Cumulus Linux Design Guide: [Container Networking with Cumulus Linux Validated Design Guide: Host Pack Advertises the Docker Bridge ](https://cumulusnetworks.com/learn/web-scale-networking-resources/validated-design-guides/Validated-Design-Guide-Container-Networking-Host-Pack-Adv-docker-bridge/)
+
 With Cumulus Quagga installed in a container, as docker bridges are created and destroyed Quagga will see the changes and modify the advertisements into the routed IP fabric.
 
 Using this technique you can deploy containers from a single large 172.16.0.0/16 network.  Each host that may be located in different racks throught the DC owns a /26 subnet from that network and advertises its own subnet into the infrastructure.
 
 ### Software in Use:
 *On Spines and Leafs:*
-  * Cumulus v3.2.0
+  * Cumulus v3.3.0
 
 *On Servers:*
 * Ubuntu 16.04
