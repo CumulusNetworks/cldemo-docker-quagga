@@ -23,6 +23,7 @@
     network_mode: host
     tty: true
     recreate: yes
+    restart_policy: unless-stopped
     image: cumulusnetworks/quagga:latest
     volumes:
       - "/root/quagga/daemons:/etc/quagga/daemons"
