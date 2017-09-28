@@ -1,4 +1,10 @@
 {% set intvars = interfaces[inventory_hostname] -%}
+frr defaults datacenter
+username cumulus nopassword
+!
+service integrated-vtysh-config
+!
+log syslog informational
 !
 {% for neighbor in intvars.neighbors %}
 interface {{ neighbor }}
@@ -12,6 +18,7 @@ router bgp {{ intvars.asn }}
     network {{ intvars.loopback }}/32
 {% for neighbor in intvars.neighbors %}
     neighbor {{ neighbor }} interface remote-as external
+    neighbor {{ neighbor }} interface v6only
     neighbor {{ neighbor }} filter-list HOST_ORIGINATED_ROUTES out
 {% endfor %}
 {% if intvars.redistribute is defined %}

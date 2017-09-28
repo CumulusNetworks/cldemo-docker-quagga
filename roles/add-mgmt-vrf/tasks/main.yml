@@ -12,3 +12,13 @@
 - name: Reconnect to switches 
   local_action: wait_for port=22 host="{{ inventory_hostname }}" search_regex=OpenSSH delay=1
 
+- name: Stop NTP Daemon
+  service: name={{item}} state=stopped enabled=no
+  with_items:
+  - "ntp"
+
+- name: Start NTP Daemons in MGMT VRF
+  service: name={{item}} state=restarted enabled=yes
+  with_items:
+  - "ntp@mgmt"
+

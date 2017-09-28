@@ -1,0 +1,25 @@
+
+# This step ensures that FRR daemons are running.
+- name: Ensure FRR is running
+  service: name=frr state=started
+
+# The FRR daemons file is a static file that specifies which subdaemons
+# are actually running (zebra, bgpd, ospf). This file is not required when
+# frr is being run using systemd.
+- name: Configure FRR daemons file
+  copy: src=daemons dest=/etc/frr/daemons
+  notify:
+    - check frr
+    - restart frr
+
+# This writes configuration to the FRR configuration file using the
+# information in group_vars/all. The biggest difference between spine and
+# leaf configuration are the prefix lists - leafs should only advertise their
+# neighboring networks, but spines should advertise any networks they accept.
+# The 'leaf' variable handles this logic for us in our template.
+- name: Configure FRR configuration
+  template: src=frr.conf.j2 dest=/etc/frr/frr.conf
+  notify:
+    - check frr
+    - restart frr
+

@@ -6,9 +6,7 @@
   roles:
     - configure-interfaces
     - add-mgmt-vrf
-    # - restart-switches
-    - mv-ntp-mgmt-vrf
-    - quagga
+    - routing
 
 - hosts: servers
   user: cumulus

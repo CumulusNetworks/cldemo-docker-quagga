@@ -1,19 +1,19 @@
-- name: Create Quagga Shared Folder on Host
-  file: path=/root/quagga state=directory mode=0755
+- name: Create FRR Shared Folder on Host
+  file: path=/root/frr state=directory mode=0755
 
-# The quagga daemons file is a static file that specifies which subdaemons
+# The FRR daemons file is a static file that specifies which subdaemons
 # are actually running (zebra, bgpd, ospf). This file is not required when
-# Quagga is being run using systemd.
-- name: configure quagga daemons file
-  copy: src=daemons dest=/root/quagga/daemons
+# FRR is being run using systemd.
+- name: Configure FRR daemons file
+  copy: src=daemons dest=/root/frr/daemons
 
-# This writes configuration to the Quagga configuration file using the
+# This writes configuration to the FRR configuration file using the
 # information in group_vars/all. The biggest difference between spine and
 # leaf configuration are the prefix lists - leafs should only advertise their
 # neighboring networks, but spines should advertise any networks they accept.
 # The 'leaf' variable handles this logic for us in our template.
-- name: Render a Quagga Config for the RoH Container
-  template: src=Quagga.conf.j2 dest=/root/quagga/Quagga.conf
+- name: Render a FRR Config for the RoH Container
+  template: src=frr.conf.j2 dest=/root/frr/frr.conf
 
 - name: Deploy ROH Container
   docker_container:
@@ -24,10 +24,10 @@
     tty: true
     recreate: yes
     restart_policy: unless-stopped
-    image: cumulusnetworks/quagga:latest
+    image: cumulusnetworks/frrouting:latest
     volumes:
-      - "/root/quagga/daemons:/etc/quagga/daemons"
-      - "/root/quagga/Quagga.conf:/etc/quagga/Quagga.conf"
+      - "/root/frr/daemons:/etc/frr/daemons"
+      - "/root/frr/frr.conf:/etc/frr/frr.conf"
 
 - name: Create a network with options
   docker_network:
