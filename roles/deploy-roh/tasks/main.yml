@@ -24,7 +24,7 @@
     tty: true
     recreate: yes
     restart_policy: unless-stopped
-    image: cumulusnetworks/frrouting:latest
+    image: hub.cumulusnetworks.com/chp-roh:latest
     volumes:
       - "/root/frr/daemons:/etc/frr/daemons"
       - "/root/frr/frr.conf:/etc/frr/frr.conf"
