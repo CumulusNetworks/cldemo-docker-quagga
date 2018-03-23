@@ -41,7 +41,7 @@ sudo su - cumulus
 git clone https://github.com/cumulusnetworks/cldemo-roh-docker
 cd cldemo-roh-docker
 
-ansible-playbook ./run-demo.yml
+ansible-playbook run-demo.yml
 ```
 ### Viewing the Results
 
